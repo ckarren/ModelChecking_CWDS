@@ -1,0 +1,23 @@
+
+MODULE door
+VAR
+  status:{open,closed};
+
+ASSIGN
+  next(status) := case
+     status = open : closed;
+     status = closed: open;
+   esac;
+   
+
+MODULE main
+VAR
+
+  d1:door;  -- instance of a door
+  d2:door;  -- another instance of a door
+
+ASSIGN
+  init(d1.status) := open; -- assign initial states (optional)
+  init(d2.status) := closed; 
+
+LTLSPEC G (d1.status !=  d2.status); -- Do the doors ever  match?
