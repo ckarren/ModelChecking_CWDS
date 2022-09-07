@@ -1,0 +1,34 @@
+
+MODULE tank (initH,Q)
+VAR
+  height:real;
+
+ASSIGN
+  init(height) := initH;
+  next(height) := height + Q;
+   
+
+MODULE main
+VAR
+
+  t:tank(50,flow);  -- instance of a tank module
+  flow:0..10;  -- flow variable
+  tap: {on,off}; -- tap variable
+
+ASSIGN
+  init(flow) := 0; -- assign initial states (optional)
+  init(tap) := off;
+
+  next(tap) := case 
+	tap = on: off;
+	tap = off : on;
+        TRUE: tap;
+  esac;
+
+  next(flow) := case 
+	tap = on: 10;
+	tap = off : 0;
+	TRUE: flow;
+  esac;
+
+LTLSPEC G (t.height <= 100); -- Can the tank overflow?
