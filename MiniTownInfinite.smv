@@ -52,7 +52,7 @@ DEFINE
 
 ASSIGN
   
-  init(type_attack) := any;
+  init(type_attack) := none; -- change as needed
   next(type_attack) := type_attack;
   init(plc_pump_link) := secure;
   init(plc_tank_link) := secure;
@@ -62,33 +62,38 @@ ASSIGN
   init(p1.status) :=on; 
   init(p2.status) :=off;  
   init(cs.actuator1) :=on; 
-  init(cs.actuator2) :=off; 
+  init(cs.actuator2) :=off;
 
+  next(plc_pump_link) := case
+    type_attack = actuator:compromised;
+    type_attack = any:compromised;
+    TRUE: secure;
+  esac;
+
+  next(plc_tank_link) := case
+    type_attack = sensor:compromised;
+    type_attack = any:compromised;
+    TRUE: secure;
+  esac;
+
+  next(p1.status) := case
+    plc_pump_link = secure:next(cs.actuator1);
+    TRUE:{on,off};
+  esac;
+
+  next(p2.status) := case
+    plc_pump_link = secure:next(cs.actuator2);
+    TRUE:{on,off};
+  esac;
+
+TRANS plc_tank_link = secure -> next(cs.tank_sensor) = next(t.height);
+TRANS plc_tank_link = compromised -> next(cs.tank_sensor) >= 0;
 
 -- the physics
 TRANS p1.status = off & p2.status = off -> next(t.height) = t.height - dT0;
 TRANS p1.status = on & p2.status = off -> next(t.height) = t.height - dT1;
 TRANS p1.status = on & p2.status = on -> next(t.height) = t.height - dT2;
 TRANS p1.status = off & p2.status = on -> next(t.height) = t.height - dT1;
-
--- attack scenarios
-TRANS plc_pump_link = secure -> next(p1.status) = next(cs.actuator1);
-TRANS plc_pump_link = secure -> next(p2.status) = next(cs.actuator2);
-TRANS plc_pump_link = compromised -> (next(p1.status) = on | next(p1.status) = off);
-TRANS plc_pump_link = compromised -> (next(p2.status) = on | next(p2.status) = off);
-TRANS plc_tank_link = secure -> next(cs.tank_sensor) = next(t.height);
-TRANS plc_tank_link = compromised -> next(cs.tank_sensor) >= 0;
-
-
--- just for describing what attacks we are interested in
-TRANS type_attack = none -> next(plc_pump_link) = secure;
-TRANS type_attack = none -> next(plc_tank_link) = secure;
-TRANS type_attack = sensor -> next(plc_pump_link) = secure;
-TRANS type_attack = sensor -> next(plc_tank_link) = compromised;
-TRANS type_attack = actuator -> next(plc_pump_link) = compromised;
-TRANS type_attack = actuator -> next(plc_tank_link) = secure;
-TRANS type_attack = any -> next(plc_pump_link) = compromised;
-TRANS type_attack = any -> next(plc_tank_link) = compromised;
 
 --INVAR t.height - cs.tank_sensor <= 50;
 --INVAR t.height - cs.tank_sensor >= -50;
