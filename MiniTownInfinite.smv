@@ -1,0 +1,108 @@
+MODULE tank
+VAR
+  height:real;
+------------------
+MODULE pump
+VAR
+  status:{on,off};
+------------------
+MODULE control_system
+VAR
+  tank_sensor:real;
+  actuator1:{on,off};
+  actuator2:{on,off};
+ASSIGN
+  next(actuator1) := case
+
+	next(tank_sensor) <= 400 : on;
+	next(tank_sensor) >= 630 : off;
+	TRUE : actuator1;
+  esac;
+
+  next(actuator2) := case
+
+	next(tank_sensor) <= 100 : on;
+	next(tank_sensor) >= 450 : off;
+	TRUE : actuator2;
+  esac;
+------------------
+MODULE main
+VAR
+  p1:pump;
+  p2:pump;
+  t:tank;
+  cs:control_system;
+  demand:real;
+  plc_pump_link: {secure,compromised};
+  plc_tank_link: {secure,compromised};
+  type_attack: {none,sensor,actuator,any};
+
+DEFINE
+  pumpFlow0 := 0;
+  pumpFlow1 := 113.699 + 6.735*demand - 1.35* (t.height/100);
+  pumpFlow2 := 181.44 + 18.356*demand - 2.1*(t.height/100);
+
+  tankFlow0 := demand * 246 - pumpFlow0;
+  tankFlow1 := demand * 246 - pumpFlow1;
+  tankFlow2 := demand * 246 - pumpFlow2;
+
+  dT0 := tankFlow0 * 0.004678 *100;
+  dT1 := tankFlow1 * 0.004678 *100;
+  dT2 := tankFlow2 * 0.004678 *100;
+
+ASSIGN
+  
+  init(type_attack) := any;
+  next(type_attack) := type_attack;
+  init(plc_pump_link) := secure;
+  init(plc_tank_link) := secure;
+
+  init(t.height) := 500;
+  init(cs.tank_sensor) := 500;
+  init(p1.status) :=on; 
+  init(p2.status) :=off;  
+  init(cs.actuator1) :=on; 
+  init(cs.actuator2) :=off; 
+
+
+-- the physics
+TRANS p1.status = off & p2.status = off -> next(t.height) = t.height - dT0;
+TRANS p1.status = on & p2.status = off -> next(t.height) = t.height - dT1;
+TRANS p1.status = on & p2.status = on -> next(t.height) = t.height - dT2;
+TRANS p1.status = off & p2.status = on -> next(t.height) = t.height - dT1;
+
+-- attack scenarios
+TRANS plc_pump_link = secure -> next(p1.status) = next(cs.actuator1);
+TRANS plc_pump_link = secure -> next(p2.status) = next(cs.actuator2);
+TRANS plc_pump_link = compromised -> (next(p1.status) = on | next(p1.status) = off);
+TRANS plc_pump_link = compromised -> (next(p2.status) = on | next(p2.status) = off);
+TRANS plc_tank_link = secure -> next(cs.tank_sensor) = next(t.height);
+TRANS plc_tank_link = compromised -> next(cs.tank_sensor) >= 0;
+
+
+-- just for describing what attacks we are interested in
+TRANS type_attack = none -> next(plc_pump_link) = secure;
+TRANS type_attack = none -> next(plc_tank_link) = secure;
+TRANS type_attack = sensor -> next(plc_pump_link) = secure;
+TRANS type_attack = sensor -> next(plc_tank_link) = compromised;
+TRANS type_attack = actuator -> next(plc_pump_link) = compromised;
+TRANS type_attack = actuator -> next(plc_tank_link) = secure;
+TRANS type_attack = any -> next(plc_pump_link) = compromised;
+TRANS type_attack = any -> next(plc_tank_link) = compromised;
+
+--INVAR t.height - cs.tank_sensor <= 50;
+--INVAR t.height - cs.tank_sensor >= -50;
+INVAR demand <= 1;
+INVAR demand >= 0;
+
+LTLSPEC G (t.height <= 400); -- 0
+LTLSPEC G (t.height <= 550); -- 1
+LTLSPEC G (t.height <= 600); -- 2
+LTLSPEC G (t.height <= 650); -- 3
+
+LTLSPEC G (t.height >= 300); -- 4
+LTLSPEC G (t.height >= 200); -- 5
+LTLSPEC G (t.height >= 100); -- 6
+LTLSPEC G (t.height >= 25); -- 7
+LTLSPEC G (t.height >= 10); -- 8
+LTLSPEC G (t.height >= 0); -- 9
