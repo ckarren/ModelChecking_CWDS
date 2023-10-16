@@ -1,0 +1,427 @@
+//UPPER LIMIT OF STATES 
+const M = 2     //pump states 
+const J = 7     //demand states 
+const H = 13     //tank states 
+ 
+//SET STATES 
+range PumpState = 0..M 		//pump states
+range DemandState = 1..J 	//demand states
+range TankState = 1..H 		//tank states
+ 
+range DeltaTank = -2..2 	//range of tank state transitions
+range DeltaPump = 0..2		//range of pump state transition
+ 
+//INITIALIZE STATES 
+const A1 = 1    //initial state of pump1 
+const A2 = 0    //initial state of pump2
+const B = 2     //initial demand          
+const C = 8     //initial tank 
+ 
+//Physical components
+TANK = (start -> TANKRUN[C]), 
+    TANKRUN[h:TankState] = (stop -> TANK 
+		|getTankState[h] -> tick ->  
+			    (incT[i:1..1] -> TANKRUN[h+i] 
+        	    |decT[i:1..2] -> TANKRUN[h-i] 
+        	    |noChangeT -> TANKRUN[h] 
+        )). 
+ 
+DEMAND = (start -> DEMANDRUN[B]),  
+    DEMANDRUN[d:DemandState] = (stop -> DEMAND  
+        |getDemandState[d] -> tick ->  
+                 (demand[1] -> DEMANDRUN[1] 
+                 |demand[2] -> DEMANDRUN[2] 
+                 |demand[3] -> DEMANDRUN[3] 
+                 |demand[4] -> DEMANDRUN[4] 
+                 |demand[5] -> DEMANDRUN[5] 
+                 |demand[6] -> DEMANDRUN[6] 
+                 |demand[7] -> DEMANDRUN[7] 
+        )). 
+ 
+PUMP = (start -> PUMPRUN[A1][A2]),  
+    PUMPRUN[p1:PumpState][p2:PumpState] = (stop -> PUMP 
+        |getPumpState[p1][p2] -> tick ->   
+                (pump2on -> PUMPRUN[p1][1] 
+			    |pump2off -> PUMPRUN[p1][0] 
+                |pump1on -> PUMPRUN[1][p2] 
+				|pump1off -> PUMPRUN[0][p2] 
+        )). 
+ 
+TIME = (start -> TIMERUN),  
+    TIMERUN = (stop -> TIME  
+        |tick -> TIMERUN 
+        ). 
+ 
+//Sensors 
+DEMANDSENSOR = (start -> DEMANDSENSORRUN),  
+    DEMANDSENSORRUN = (stop -> DEMANDSENSOR  
+                    |getDemandState[d:DemandState] -> tick -> demandchan.send[d] -> DEMANDSENSORRUN 
+					).  
+ 
+PUMPSENSOR = (start -> PUMPSENSORRUN),  
+    PUMPSENSORRUN = (stop -> PUMPSENSOR 
+                    |getPumpState[p1:PumpState][p2:PumpState] -> tick ->  pumpchan.send[p1][p2] -> PUMPSENSORRUN 
+					).  
+ 
+TANKSENSOR = (start -> TANKSENSORRUN), 
+    TANKSENSORRUN = (stop -> TANKSENSOR 
+                    |getTankState[h:TankState] -> tick ->  tankchan.send[h] -> TANKSENSORRUN 
+					).  
+
+//System control 
+SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),  
+    SYSCONTROLRUN[pi1:PumpState][pi2:PumpState][di:DemandState][hi:TankState] =  
+        (stop -> SYSCONTROL 
+        |tick -> pumpchan.receive[p1:PumpState][p2:PumpState] -> tankchan.receive[h:TankState] -> demandchan.receive[d:DemandState] -> HC[p1][p2][d][h]), 
+        HC[p1:PumpState][p2:PumpState][d:DemandState][h:TankState] =  
+            (when(p1+p2==0 && d==1 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==1 && h==13) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==2 && h==13) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==3 && h==13) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==4 && h==13) decT[1] -> DC[p1][p2][d][h]
+
+            |when(p1+p2==0 && d==5 && h==1) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==2) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==3) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==4) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==5) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==6) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==7) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==8) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==9) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==10) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==11) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==12) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==5 && h==13) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==1) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==2) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==3) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==4) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==5) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==6) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==7) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==8) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==9) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==10) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==11) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==12) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==6 && h==13) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==1) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==2) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==3) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==4) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==5) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==6) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==7) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==8) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==9) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==10) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==11) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==12) decT[2] -> DC[p1][p2][d][h]
+            |when(p1+p2==0 && d==7 && h==13) decT[2] -> DC[p1][p2][d][h]
+
+            |when(p1+p2==1 && d==1 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==1 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==2 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==3 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==4 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==5 && h==13) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==6 && h==13) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==1) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==2) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==3) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==4) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==5) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==1 && d==7 && h==13) decT[1] -> DC[p1][p2][d][h]
+
+            |when(p1+p2==2 && d==1 && h==1) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==2) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==3) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==4) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==5) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==6) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==7) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==8) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==9) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==10) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==11) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==12) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==1 && h==13) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==1) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==2) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==3) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==4) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==5) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==6) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==7) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==8) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==9) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==10) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==11) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==12) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==2 && h==13) incT[1] -> DC[p1][p2][d][h]
+
+            |when(p1+p2==2 && d==3 && h==1) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==2) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==3) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==4) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==5) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==6) incT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==7) incT[1] -> DC[p1][p2][d][h]
+
+            |when(p1+p2==2 && d==3 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==3 && h==13) noChangeT -> DC[p1][p2][d][h]
+
+            |when(p1+p2==2 && d==4 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==4 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==5 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==6) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==7) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==8) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==9) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==10) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==11) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==12) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==6 && h==13) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==1) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==2) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==3) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==4) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==5) noChangeT -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==6) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==7) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==8) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==9) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==10) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==11) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==12) decT[1] -> DC[p1][p2][d][h]
+            |when(p1+p2==2 && d==7 && h==13) decT[1] -> DC[p1][p2][d][h]
+        ),
+          
+         DC[p1:PumpState][p2:PumpState][d:DemandState][h:TankState] =  
+                 (demand[1] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[2] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[3] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[4] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[5] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[6] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[7] -> SYSCONTROLRUN[p1][p2][d][h] 
+        ). 
+ 
+PUMPACTUATOR = (start -> PUMPACTUATORRUN), 
+	PUMPACTUATORRUN = (stop -> PUMPACTUATOR  
+		|tick -> pumpcontrollerchan.receive[o1:5..8] ->  
+            (when(o1==5) pump2on-> PUMPACTUATORRUN 
+            |when(o1==6) pump1on -> PUMPACTUATORRUN 
+            |when(o1==7) pump2off -> PUMPACTUATORRUN 
+            |when(o1==8) pump1off -> PUMPACTUATORRUN 
+            ) 
+	). 
+   
+//Cyber components 
+PLC1 = (start -> PLC1RUN),  
+	PLC1RUN = (stop -> PLC1 
+		|tick -> tankchan.receive[h:TankState] -> plc1chan.send[h] -> plc2chan.receive[p1:PumpState][p2:PumpState] -> scadachan.send[p1][p2] -> PLC1RUN).  
+ 
+PLC2 = (start -> PLC2RUN),  
+    PLC2RUN = (stop -> PLC2  
+        |tick -> pumpchan.receive[p1:PumpState][p2:PumpState] -> plc1chan.receive[h:TankState] -> plc2chan.send[p1][p2] ->    
+        //>6.3 pump one off 
+        //>4.4 pump two off 
+        //<4 pump one on  
+        //<1 pump two on  
+            (pumpcontrollerchan.send[5] -> PLC2RUN 
+			|pumpcontrollerchan.send[6] -> PLC2RUN 
+            |pumpcontrollerchan.send[7] -> PLC2RUN 
+            |pumpcontrollerchan.send[8] -> PLC2RUN 
+			) 
+	).  
+ 
+SCADA = (start -> SCADARUN),  
+	SCADARUN = (stop -> SCADA 
+			|tick -> plc1chan.receive[h:TankState] -> scadachan.receive[p1:PumpState][p2:PumpState] -> display[h][p1][p2] -> SCADARUN).  
+ 
+//DEMANDPAT = (start -> demand[2] -> demand[3] -> demand[1] -> demand[1] -> demand[2] -> stop -> DEMANDPAT).  
+
+//property SAFEPUMP1 = 
+//		(plc1chan.receive[h:TankState] ->
+//			(when(h<=2) pumpcontrollerchan.send[5] -> SAFEPUMP1 		//pump2on
+//			|when(h>2 && h<=8) pumpcontrollerchan.send[6] -> SAFEPUMP1  //pump1on
+//            |when(h>=9 && h<13) pumpcontrollerchan.send[7] -> SAFEPUMP1 //pump2off
+//            |when(h>=13) pumpcontrollerchan.send[8] -> SAFEPUMP1		//pump1off
+//			)
+//		).
+
+//ATTACK = (tankchan.receive[h:TankState] ->  
+//	(when(h==2) open.send[oh:TankState] -> ATTACK 
+//	|when(h!=2) open.send[h] -> ATTACK)).  
+ 
+||SYS = (TANK || TANKSENSOR || DEMAND || DEMANDSENSOR || PUMP || PUMPSENSOR || PUMPACTUATOR || TIME || SYSCONTROL || PLC1 || PLC2 || SCADA) 
+	/{tankchan/tankchan.{send,receive}, demandchan/demandchan.{send, receive}, pumpchan/pumpchan.{send,receive},  
+    pumpcontrollerchan/pumpcontrollerchan.{send,receive}, demandcontrollerchan/demandcontrollerchan.{send,receive},  
+    tankcontrollerchan/tankcontrollerchan.{send,receive}, timechan/timechan.{send,receive},  
+	plc1chan/plc1chan.{send,receive}, plc2chan/plc2chan.{send,receive}, scadachan/scadachan.{send, receive}, open/open.{send, receive}}>>{tick}.  
+// maximal progress: lower the priority of tick (>>): eager physics 
+ 
+||SYSATTACK = (SYS || SAFEPUMP1) 
+ /{tankchan/tankchan.{send,receive}, open/open.{send, receive}}.   
+ 
+progress ScadaDisplay = {display.{[1][2], [2..3][1..2], [4][1], [5..6][0..1], [7][0]}} 
+// SCADA should only be expected to display certain combinations of tank status and pump status given pump rules.  
