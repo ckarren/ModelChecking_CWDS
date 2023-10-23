@@ -1,2 +1,4 @@
-# EMS_MiniTown
-### Repo for models that will be linked in Environmental Modeling and Software paper
+# Model checking water distribution systems files and models
+## Python files for linearization and calibration
+## nuXmv model files
+## LTSA model files
