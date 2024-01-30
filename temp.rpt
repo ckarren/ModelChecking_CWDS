@@ -1,0 +1,404 @@
+  Page 1                                    Tue Jan 30 13:49:16 2024
+
+  ******************************************************************
+  *                           E P A N E T                          *
+  *                   Hydraulic and Water Quality                  *
+  *                   Analysis for Pipe Networks                   *
+  *                         Version 2.2                            *
+  ******************************************************************
+  
+  Analysis begun Tue Jan 30 13:49:16 2024
+
+   
+  Hydraulic Status:
+  -----------------------------------------------------------------------
+     0:00:00: Pump PUMP1 changed by Tank TANK control
+     0:00:00: Balanced after 5 trials
+     0:00:00: Reservoir R1 is emptying
+     0:00:00: Tank TANK is emptying at 3.50 m
+     0:00:00: Pump PUMP1 open
+   
+     1:00:00: Balanced after 2 trials
+   
+     2:00:00: Balanced after 1 trials
+   
+     3:00:00: Balanced after 2 trials
+     3:00:00: Tank TANK is filling at 3.09 m
+   
+     4:00:00: Balanced after 2 trials
+   
+     5:00:00: Balanced after 2 trials
+   
+     6:00:00: Balanced after 2 trials
+   
+     7:00:00: Balanced after 2 trials
+   
+     8:00:00: Balanced after 2 trials
+   
+     9:00:00: Balanced after 2 trials
+   
+    10:00:00: Balanced after 2 trials
+    10:00:00: Tank TANK is emptying at 4.10 m
+   
+    11:00:00: Balanced after 2 trials
+    11:00:00: Tank TANK is filling at 4.03 m
+   
+    12:00:00: Balanced after 2 trials
+   
+    13:00:00: Balanced after 2 trials
+   
+    14:00:00: Balanced after 1 trials
+   
+    14:11:19: Pump PUMP2 changed by Tank TANK control
+    14:11:19: Balanced after 3 trials
+    14:11:19: Tank TANK is emptying at 4.50 m
+    14:11:19: Pump PUMP2 changed from open to closed
+   
+    15:00:00: Balanced after 1 trials
+   
+    16:00:00: Balanced after 2 trials
+   
+    17:00:00: Balanced after 2 trials
+   
+    18:00:00: Balanced after 2 trials
+   
+    19:00:00: Balanced after 2 trials
+   
+    20:00:00: Balanced after 2 trials
+   
+    21:00:00: Balanced after 2 trials
+   
+    22:00:00: Balanced after 2 trials
+   
+    23:00:00: Balanced after 2 trials
+   
+    24:00:00: Balanced after 2 trials
+   
+    24:30:12: Pump PUMP2 changed by Tank TANK control
+    24:30:12: Balanced after 5 trials
+    24:30:12: Pump PUMP2 changed from closed to open
+   
+    25:00:00: Balanced after 2 trials
+    25:00:00: Tank TANK is filling at 1.00 m
+   
+    26:00:00: Balanced after 2 trials
+   
+    27:00:00: Balanced after 2 trials
+   
+    28:00:00: Balanced after 2 trials
+   
+    29:00:00: Balanced after 2 trials
+   
+    30:00:00: Balanced after 2 trials
+   
+    31:00:00: Balanced after 2 trials
+   
+    32:00:00: Balanced after 2 trials
+   
+    33:00:00: Balanced after 2 trials
+    33:00:00: Tank TANK is emptying at 1.80 m
+   
+    34:00:00: Balanced after 2 trials
+   
+    35:00:00: Balanced after 2 trials
+   
+    36:00:00: Balanced after 1 trials
+   
+    37:00:00: Balanced after 1 trials
+   
+    38:00:00: Balanced after 1 trials
+   
+    39:00:00: Balanced after 1 trials
+   
+    40:00:00: Balanced after 2 trials
+    40:00:00: Tank TANK is filling at 1.24 m
+   
+    41:00:00: Balanced after 2 trials
+   
+    42:00:00: Balanced after 2 trials
+   
+    43:00:00: Balanced after 2 trials
+   
+    44:00:00: Balanced after 2 trials
+   
+    45:00:00: Balanced after 2 trials
+   
+    46:00:00: Balanced after 2 trials
+   
+    47:00:00: Balanced after 1 trials
+   
+    48:00:00: Balanced after 1 trials
+   
+    49:00:00: Balanced after 2 trials
+   
+    50:00:00: Balanced after 2 trials
+    50:00:00: Tank TANK is emptying at 3.39 m
+   
+    51:00:00: Balanced after 2 trials
+   
+    52:00:00: Balanced after 3 trials
+    52:00:00: Tank TANK is filling at 3.23 m
+   
+    53:00:00: Balanced after 1 trials
+   
+    54:00:00: Balanced after 2 trials
+   
+    55:00:00: Balanced after 2 trials
+   
+    56:00:00: Balanced after 2 trials
+   
+    57:00:00: Balanced after 2 trials
+   
+    58:00:00: Balanced after 2 trials
+   
+    59:00:00: Balanced after 2 trials
+   
+    59:27:03: Pump PUMP2 changed by Tank TANK control
+    59:27:03: Balanced after 3 trials
+    59:27:03: Tank TANK is emptying at 4.50 m
+    59:27:03: Pump PUMP2 changed from open to closed
+   
+    60:00:00: Balanced after 1 trials
+   
+    61:00:00: Balanced after 1 trials
+   
+    62:00:00: Balanced after 1 trials
+   
+    63:00:00: Balanced after 2 trials
+   
+    64:00:00: Balanced after 2 trials
+   
+    65:00:00: Balanced after 2 trials
+   
+    66:00:00: Balanced after 2 trials
+   
+    67:00:00: Balanced after 2 trials
+   
+    68:00:00: Balanced after 2 trials
+   
+    69:00:00: Balanced after 2 trials
+   
+    70:00:00: Balanced after 2 trials
+   
+    71:00:00: Balanced after 1 trials
+   
+    71:47:15: Pump PUMP2 changed by Tank TANK control
+    71:47:15: Balanced after 5 trials
+    71:47:15: Pump PUMP2 changed from closed to open
+   
+    72:00:00: Balanced after 2 trials
+   
+    73:00:00: Balanced after 2 trials
+    73:00:00: Tank TANK is filling at 0.88 m
+   
+    74:00:00: Balanced after 2 trials
+   
+    75:00:00: Balanced after 2 trials
+   
+    76:00:00: Balanced after 2 trials
+   
+    77:00:00: Balanced after 2 trials
+   
+    78:00:00: Balanced after 2 trials
+   
+    79:00:00: Balanced after 2 trials
+   
+    80:00:00: Balanced after 2 trials
+   
+    81:00:00: Balanced after 2 trials
+    81:00:00: Tank TANK is emptying at 2.05 m
+   
+    82:00:00: Balanced after 2 trials
+   
+    83:00:00: Balanced after 2 trials
+   
+    84:00:00: Balanced after 1 trials
+   
+    85:00:00: Balanced after 2 trials
+   
+    86:00:00: Balanced after 2 trials
+   
+    87:00:00: Balanced after 1 trials
+   
+    88:00:00: Balanced after 1 trials
+   
+    89:00:00: Balanced after 2 trials
+    89:00:00: Tank TANK is filling at 1.36 m
+   
+    90:00:00: Balanced after 2 trials
+   
+    91:00:00: Balanced after 2 trials
+   
+    92:00:00: Balanced after 2 trials
+   
+    93:00:00: Balanced after 2 trials
+   
+    94:00:00: Balanced after 2 trials
+   
+    95:00:00: Balanced after 1 trials
+   
+    96:00:00: Balanced after 2 trials
+   
+    97:00:00: Balanced after 2 trials
+   
+    98:00:00: Balanced after 2 trials
+   
+    99:00:00: Balanced after 2 trials
+   
+   100:00:00: Balanced after 2 trials
+   
+   101:00:00: Balanced after 2 trials
+   
+   102:00:00: Balanced after 2 trials
+   
+   103:00:00: Balanced after 2 trials
+   
+   104:00:00: Balanced after 2 trials
+   104:00:00: Tank TANK is emptying at 4.20 m
+   
+   105:00:00: Balanced after 2 trials
+   
+   106:00:00: Balanced after 2 trials
+   
+   107:00:00: Balanced after 2 trials
+   
+   108:00:00: Balanced after 2 trials
+   108:00:00: Tank TANK is filling at 3.58 m
+   
+   109:00:00: Balanced after 2 trials
+   
+   110:00:00: Balanced after 2 trials
+   
+   111:00:00: Balanced after 3 trials
+   
+   112:00:00: Balanced after 2 trials
+   
+   113:00:00: Balanced after 2 trials
+   
+   113:08:40: Pump PUMP2 changed by Tank TANK control
+   113:08:40: Balanced after 3 trials
+   113:08:40: Pump PUMP2 changed from open to closed
+   
+   114:00:00: Balanced after 2 trials
+   
+   115:00:00: Balanced after 2 trials
+   115:00:00: Tank TANK is emptying at 4.58 m
+   
+   116:00:00: Balanced after 2 trials
+   
+   117:00:00: Balanced after 2 trials
+   
+   118:00:00: Balanced after 1 trials
+   
+   119:00:00: Balanced after 2 trials
+   
+   120:00:00: Balanced after 2 trials
+   
+   121:00:00: Balanced after 2 trials
+   
+   122:00:00: Balanced after 2 trials
+   
+   123:00:00: Balanced after 2 trials
+   
+   124:00:00: Balanced after 2 trials
+   
+   125:00:00: Balanced after 2 trials
+   
+   126:00:00: Balanced after 2 trials
+   
+   127:00:00: Balanced after 2 trials
+   
+   128:00:00: Balanced after 3 trials
+   
+   129:00:00: Balanced after 2 trials
+   
+   130:00:00: Balanced after 2 trials
+   
+   130:06:02: Pump PUMP2 changed by Tank TANK control
+   130:06:02: Balanced after 5 trials
+   130:06:02: Pump PUMP2 changed from closed to open
+   
+   131:00:00: Balanced after 2 trials
+   
+   132:00:00: Balanced after 2 trials
+   
+   133:00:00: Balanced after 1 trials
+   
+   134:00:00: Balanced after 1 trials
+   
+   135:00:00: Balanced after 2 trials
+   135:00:00: Tank TANK is filling at 0.71 m
+   
+   136:00:00: Balanced after 2 trials
+   
+   137:00:00: Balanced after 2 trials
+   
+   138:00:00: Balanced after 1 trials
+   
+   139:00:00: Balanced after 2 trials
+   
+   140:00:00: Balanced after 2 trials
+   140:00:00: Tank TANK is emptying at 1.12 m
+   
+   141:00:00: Balanced after 2 trials
+   
+   142:00:00: Balanced after 1 trials
+   
+   143:00:00: Balanced after 2 trials
+   
+   144:00:00: Balanced after 1 trials
+   
+   145:00:00: Balanced after 2 trials
+   145:00:00: Tank TANK is filling at 0.62 m
+   
+   146:00:00: Balanced after 2 trials
+   
+   147:00:00: Balanced after 2 trials
+   
+   148:00:00: Balanced after 1 trials
+   
+   149:00:00: Balanced after 2 trials
+   
+   150:00:00: Balanced after 2 trials
+   
+   151:00:00: Balanced after 2 trials
+   
+   152:00:00: Balanced after 2 trials
+   
+   153:00:00: Balanced after 2 trials
+   
+   154:00:00: Balanced after 1 trials
+   
+   155:00:00: Balanced after 2 trials
+   
+   156:00:00: Balanced after 2 trials
+   
+   157:00:00: Balanced after 1 trials
+   
+   158:00:00: Balanced after 3 trials
+   158:00:00: Tank TANK is emptying at 4.09 m
+   
+   159:00:00: Balanced after 2 trials
+   
+   160:00:00: Balanced after 2 trials
+   
+   161:00:00: Balanced after 2 trials
+   161:00:00: Tank TANK is filling at 3.66 m
+   
+   162:00:00: Balanced after 2 trials
+   
+   163:00:00: Balanced after 2 trials
+   163:00:00: Tank TANK is emptying at 3.83 m
+   
+   164:00:00: Balanced after 2 trials
+   
+   165:00:00: Balanced after 2 trials
+   
+   166:00:00: Balanced after 2 trials
+   
+   167:00:00: Balanced after 1 trials
+   
+   168:00:00: Balanced after 2 trials
+   168:00:00: Tank TANK is filling at 3.00 m
+   
+  Analysis ended Tue Jan 30 13:49:16 2024

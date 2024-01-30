@@ -3,64 +3,35 @@
 
 [JUNCTIONS]
 ;ID              	Elev        	Demand      	Pattern         
-;NFLOURS    Value
-;PRESS_DRIVEN    Ref.press   Tresh.press
  J421            	37.09       	15.04425    	DMA1_pat        	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J332            	44.18       	8.609582    	DMA1_pat        	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J156            	56.16       	21.7867     	DMA1_pat        	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J39             	45.88       	62.41494    	DMA1_pat        	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J269            	56          	0           	                	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J273            	56          	0           	                	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J280            	56          	0           	                	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
  J285            	56          	0           	                	;
-; NFLOURS     	1           
-; PRESS_DRIVEN	14.276	-1.0        
 
 [RESERVOIRS]
 ;ID              	Head        	Pattern         
  R1              	59          	                	;
 
 [TANKS]
-;ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve
+;ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve        	Overflow
  TANK            	71.5        	3           	0           	6.5         	31.3        	0           	                	;
 
 [PIPES]
 ;ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status
-; SIZINGDATA	 Bulk coeff. 	Wall coeff. 	Diam. Zone   	Material    	Is Sizable  	D. Coeff.   	Demand Patt 	Loss Coeff. 	Loss Patt   
  P15             	J39             	TANK            	395.29      	406         	90.48302    	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  P310            	J269            	J156            	9           	610         	87.26803    	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  P316            	R1              	J280            	11.62       	610         	70.45195    	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  P320            	J273            	J269            	11.47       	610         	76.51881    	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  P322            	J280            	J285            	11.5        	610         	89.43312    	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  New82           	J156            	J421            	4296.2      	433.2777    	110         	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  New95           	J332            	J39             	698.54      	228.8557    	110         	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  New110          	J156            	J332            	5910.1      	146.4083    	110         	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  New112          	J421            	J332            	2527.37     	90.10659    	110         	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
  New113          	J421            	J39             	3205.47     	551.204     	110         	0           	open  	;
-; SIZINGDATA      	""          	""          	0           	            	Yes         	1.0         	""          	1.0         	""          	;Used in Network Sizing
 
 [PUMPS]
 ;ID              	Node1           	Node2           	Parameters
@@ -74,65 +45,63 @@
 
 [DEMANDS]
 ;Junction        	Demand      	Pattern         	Category
- J421            	15.04425    	DMA1_pat        	;    
- J421            	1           	J14             	;    
- J421            	0           	                	;Pipe: New82  
- J421            	0           	                	;Loss: New82  
- J421            	0           	                	;Pipe: New112  
- J421            	0           	                	;Loss: New112  
- J421            	0           	                	;Pipe: New113  
- J421            	0           	                	;Loss: New113  
- J332            	8.609582    	DMA1_pat        	;    
- J332            	1           	J301            	;    
- J332            	0           	                	;Pipe: New95  
- J332            	0           	                	;Loss: New95  
- J332            	0           	                	;Pipe: New110  
- J332            	0           	                	;Loss: New110  
- J332            	0           	                	;Pipe: New112  
- J332            	0           	                	;Loss: New112  
- J156            	21.7867     	DMA1_pat        	;   
- J156            	0           	                	;Pipe: P310  
- J156            	0           	                	;Loss: P310  
- J156            	0           	                	;Pipe: New82  
- J156            	0           	                	;Loss: New82  
- J156            	0           	                	;Pipe: New110  
- J156            	0           	                	;Loss: New110  
- J39             	62.41494    	DMA1_pat        	;   
- J39             	0           	                	;Pipe: P15  
- J39             	0           	                	;Loss: P15  
- J39             	0           	                	;Pipe: New95  
- J39             	0           	                	;Loss: New95  
- J39             	0           	                	;Pipe: New113  
- J39             	0           	                	;Loss: New113  
- J269            	0           	                	;   
- J269            	0           	                	;Pipe: P310  
- J269            	0           	                	;Loss: P310  
- J269            	0           	                	;Pipe: P320  
- J269            	0           	                	;Loss: P320  
- J273            	0           	                	;   
- J273            	0           	                	;Pipe: P320  
- J273            	0           	                	;Loss: P320  
- J280            	0           	                	;   
- J280            	0           	                	;Pipe: P316  
- J280            	0           	                	;Loss: P316  
- J280            	0           	                	;Pipe: P322  
- J280            	0           	                	;Loss: P322  
- J285            	0           	                	;   
- J285            	0           	                	;Pipe: P322  
- J285            	0           	                	;Loss: P322  
+ J421            	15.04425    	DMA1_pat        	;     
+ J421            	1           	J14             	;     
+ J421            	0           	                	;Pipe: New82   
+ J421            	0           	                	;Loss: New82   
+ J421            	0           	                	;Pipe: New112   
+ J421            	0           	                	;Loss: New112   
+ J421            	0           	                	;Pipe: New113   
+ J421            	0           	                	;Loss: New113   
+ J421            	0           	                	; LeakP: New112          	0.0         	0.0         	0.0         	0.0          
+ J421            	0           	                	; LeakP: New113          	0.0         	0.0         	0.0         	0.0          
+ J332            	8.609582    	DMA1_pat        	;     
+ J332            	1           	J301            	;     
+ J332            	0           	                	;Pipe: New95   
+ J332            	0           	                	;Loss: New95   
+ J332            	0           	                	;Pipe: New110   
+ J332            	0           	                	;Loss: New110   
+ J332            	0           	                	;Pipe: New112   
+ J332            	0           	                	;Loss: New112   
+ J332            	0           	                	; LeakP: New95           	0.0         	0.0         	0.0         	0.0          
+ J156            	21.7867     	DMA1_pat        	;    
+ J156            	0           	                	;Pipe: P310   
+ J156            	0           	                	;Loss: P310   
+ J156            	0           	                	;Pipe: New82   
+ J156            	0           	                	;Loss: New82   
+ J156            	0           	                	;Pipe: New110   
+ J156            	0           	                	;Loss: New110   
+ J156            	0           	                	; LeakP: New82           	0.0         	0.0         	0.0         	0.0          
+ J156            	0           	                	; LeakP: New110          	0.0         	0.0         	0.0         	0.0          
+ J39             	62.41494    	DMA1_pat        	;    
+ J39             	0           	                	;Pipe: P15   
+ J39             	0           	                	;Loss: P15   
+ J39             	0           	                	;Pipe: New95   
+ J39             	0           	                	;Loss: New95   
+ J39             	0           	                	;Pipe: New113   
+ J39             	0           	                	;Loss: New113   
+ J39             	0           	                	; LeakP: P15             	0.0         	0.0         	0.0         	0.0          
+ J269            	0           	                	;    
+ J269            	0           	                	;Pipe: P310   
+ J269            	0           	                	;Loss: P310   
+ J269            	0           	                	;Pipe: P320   
+ J269            	0           	                	;Loss: P320   
+ J269            	0           	                	; LeakP: P310            	0.0         	0.0         	0.0         	0.0          
+ J273            	0           	                	;    
+ J273            	0           	                	;Pipe: P320   
+ J273            	0           	                	;Loss: P320   
+ J273            	0           	                	; LeakP: P320            	0.0         	0.0         	0.0         	0.0          
+ J280            	0           	                	;    
+ J280            	0           	                	;Pipe: P316   
+ J280            	0           	                	;Loss: P316   
+ J280            	0           	                	;Pipe: P322   
+ J280            	0           	                	;Loss: P322   
+ J280            	0           	                	; LeakP: P316            	0.0         	0.0         	0.0         	0.0          
+ J280            	0           	                	; LeakP: P322            	0.0         	0.0         	0.0         	0.0          
+ J285            	0           	                	;    
+ J285            	0           	                	;Pipe: P322   
+ J285            	0           	                	;Loss: P322   
 
-;      ---------------------- JUNCS LEAKAGES ----------------------
-;      ---------------------- PIPES LEAKAGES ----------------------
- J39             	0	            	; LeakP: P15             	0.0         	0.0         	0.0         	0.0         
- J269            	0	            	; LeakP: P310            	0.0         	0.0         	0.0         	0.0         
- J280            	0	            	; LeakP: P316            	0.0         	0.0         	0.0         	0.0         
- J273            	0	            	; LeakP: P320            	0.0         	0.0         	0.0         	0.0         
- J280            	0	            	; LeakP: P322            	0.0         	0.0         	0.0         	0.0         
- J156            	0	            	; LeakP: New82           	0.0         	0.0         	0.0         	0.0         
- J332            	0	            	; LeakP: New95           	0.0         	0.0         	0.0         	0.0         
- J156            	0	            	; LeakP: New110          	0.0         	0.0         	0.0         	0.0         
- J421            	0	            	; LeakP: New112          	0.0         	0.0         	0.0         	0.0         
- J421            	0	            	; LeakP: New113          	0.0         	0.0         	0.0         	0.0         
 [STATUS]
 ;ID              	Status/Setting
  PUMP1           	Closed
@@ -230,38 +199,38 @@
 
 [CURVES]
 ;ID              	X-Value     	Y-Value
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  6               	16.88889    	156.7       
  6               	19.5        	146.5       
  6               	22.13889    	136.2       
  6               	25.94445    	117.9       
  6               	33.33334    	50          
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  7               	18.25       	75          
  7               	23.38889    	64          
  7               	30.63889    	46          
  7               	38.88889    	0           
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  4               	30.12222    	221.76      
  4               	37.63612    	202.41      
  4               	43.73056    	182.16      
  4               	47.22223    	160         
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  5               	31.91389    	217.27      
  5               	37.87778    	201.91      
  5               	42.55278    	187.15      
  5               	50          	140         
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  2               	9.888889    	72.2        
  2               	12.52778    	62.3        
  2               	13.33333    	57.9        
  2               	18.05556    	0           
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  3               	11.30278    	76.59       
  3               	12.65833    	68.19       
  3               	14.03056    	60.29       
  3               	18.05556    	0           
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  1               	3.997222    	64.86       
  1               	41.90556    	48.48       
  1               	56.13611    	43.96       
@@ -269,19 +238,19 @@
  1               	77.29445    	34.53       
  1               	97.66111    	28.83       
  1               	138.8889    	1           
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  8               	0           	70          
  8               	60          	50          
  8               	100         	30          
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  9               	0           	90          
  9               	30          	70          
  9               	50          	30          
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  10              	0           	120         
  10              	30          	110         
  10              	70          	30          
-;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
+;PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP: PUMP:
  11              	0           	90          
  11              	30          	50          
  11              	40          	10          
@@ -298,7 +267,9 @@ LINK          PUMP2 CLOSED IF NODE          TANK            ABOVE          4.5
 
 
 
+
 [RULES]
+
 
 
 
@@ -354,18 +325,18 @@ LINK          PUMP2 CLOSED IF NODE          TANK            ABOVE          4.5
 ;Tank            	Model
 
 [TIMES]
- Duration           	168:00 
- Hydraulic Timestep 	0:15 
+ Duration           	24
+ Hydraulic Timestep 	1:00 
  Quality Timestep   	0:05 
  Pattern Timestep   	1:00 
  Pattern Start      	0:00 
- Report Timestep    	0:15 
+ Report Timestep    	1
  Report Start       	0:00 
  Start ClockTime    	0:00:00
  Statistic          	NONE
 
 [REPORT]
- Status             	No
+ Status             	Yes
  Summary            	No
  Page               	0
 
@@ -388,32 +359,32 @@ LINK          PUMP2 CLOSED IF NODE          TANK            ABOVE          4.5
  Tolerance          	0.01000000
 
 [COORDINATES]
-;Node            	X-Coord         	Y-Coord
- J421            	-246663.51      	148880.20       
- J332            	-247095.24      	149459.02       
- J156            	-247645.59      	148633.50       
- J39             	-245980.32      	149691.49       
- J269            	-248385.72      	148495.91       
- J273            	-248385.72      	148339.35       
- J280            	-248635.39      	148489.98       
- J285            	-248637.17      	148334.60       
- R1              	-249268.17      	148491.17       
- TANK            	-244675.61      	150607.16       
+;Node            	X-Coord           	Y-Coord
+J421            	-246663.510       	148880.200        
+J332            	-247095.240       	149459.020        
+J156            	-247645.590       	148633.500        
+J39             	-245980.320       	149691.490        
+J269            	-248385.720       	148495.910        
+J273            	-248385.720       	148339.350        
+J280            	-248635.390       	148489.980        
+J285            	-248637.170       	148334.600        
+R1              	-249268.170       	148491.170        
+TANK            	-244675.610       	150607.160        
 
 [VERTICES]
-;Link            	X-Coord         	Y-Coord
- P15             	-245116.84      	150118.49       
- New110          	-248067.84      	149302.45       
- New113          	-245633.98      	149141.15       
+;Link            	X-Coord           	Y-Coord
+P15             	-245116.840       	150118.490        
+New110          	-248067.840       	149302.450        
+New113          	-245633.980       	149141.150        
 
 [LABELS]
-;X-Coord           Y-Coord          Label & Anchor Node
- -249234.96       148633.50        "Source" R1              
- -248770.01       148253.95        "Pumping Station S1" J285            
- -244561.75       150725.77        "TANK" TANK            
+;X-Coord             Y-Coord             Label & Anchor Node
+-249234.960       	148633.500        	"Source"	R1
+-248770.010       	148253.950        	"Pumping Station S1"	J285
+-244561.750       	150725.770        	"TANK"	TANK
 
 [BACKDROP]
- DIMENSIONS     	-249469.32      	147238.65       	-245209.84      	151508.59       
+  DIMENSIONS  	-249469.320       	147238.650        	-245209.840       	151508.590        
  UNITS          	Meters
  FILE           	
  OFFSET         	0.00            	0.00            

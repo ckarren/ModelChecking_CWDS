@@ -1,6 +1,6 @@
 import numpy as np 
 import wntr
-from mt_reg_02 import regress
+from linear_regression import regress
 
 def set_max_height(h=6.5):
     h=h
@@ -10,9 +10,7 @@ def round_dh_to_disc(num, num_states):
     lo = 0.0
     hi = 6.5
     n = round((hi - lo) / (num_states-1),2)
-    # print(n)
     res = round(num / n) * n
-
     return res
 
 def set_demand_pattern(demand_file = 'demand.txt'):
@@ -40,11 +38,14 @@ def pump_on_off(pump_one, pump_two, tank_h):
     return pump_one, pump_two    
 
 def pump_flow(pump1, pump2, tank_h, demand):
+    #  eq1, eq2 = regress()
     if pump1 + pump2 == 0:
         Qpump = 0
     elif pump1 + pump2 == 1:
+        #  Qpump = eq1[0] + eq1[1] * tank_h + eq1[2] * demand
         Qpump = 113.9 + 0.036 * demand - 1.34 * tank_h
     else:
+        #  Qpump = eq2[0] + eq2[1] * tank_h + eq2[2] * demand
         Qpump = 183.54 + .067 * demand - 2.2 * tank_h
     Qpump = round(Qpump, 3)
 
@@ -80,7 +81,7 @@ def deltaHeight(demand_list, tank_list, const):
             dHeight_dict[2][i][j] = round(dh / (tank_inc))  * tank_inc   #create value for each pump and demand key
     return dHeight_dict
 
-def epanet_groundtruth(init_tank=3.0, file_name='minitown_map03.inp', duration=168, pump1_init=0, pump2_init=1):
+def epanet_groundtruth(init_tank=3.0, file_name='minitown_map.inp', duration=168, pump1_init=0, pump2_init=1):
     """runs an EPANET hydraulic simulation and returns an array of tank values"""
     wn = wntr.network.WaterNetworkModel(file_name)
     duration = 3600 * duration
@@ -116,14 +117,14 @@ def create_states(lb, ub, num_states):
     return states[:num_states]
 
 def lin_tank_height(demand, h_init=3.0, p1_init=0, p2_init=1,  t_tot=168):
-    """"Calculates the height of the tank and every time step.
+    """"Calculates the height of the tank at every time step.
         p1_init::Int {0,1} = initial status of pump1; 0 = off, 1 = on
         p2_init::Int {0,1} = inital status of pump2; 0 = off, 1 = on
         h_init::Float = initial height of tank. For network_ min = 0, max = 6.5
         t_tot::Int = total time of simulation in hours
         demand::List = list of demand values at each time step
         
-        returns a list of time steps, and a list of height values """
+        returns a list of time steps, and a list of tank height values """
 
     pump_1 = p1_init
     pump_2 = p2_init
@@ -144,10 +145,6 @@ def lin_tank_height(demand, h_init=3.0, p1_init=0, p2_init=1,  t_tot=168):
         t += 1
 
     return time_arr, height_arr, pump_arr
-
-# def disc_results(res_list, state_list):
-#     res = np.digitize(res_list, state_list)
-#     return res
 
 def calc_rmse(pred, obs):
     r = pred - obs
@@ -176,13 +173,9 @@ def round_to_disc(pattern, num_states, is_tank=False):
         hi = np.max(pattern)
     n = (hi - lo) / (num_states-1)
     res = [round(x / n) for x in pattern]
-    # print("res1:", res)
     st = [x - np.min(res) for x in res]
-    # print("st:", st)
     res = [round(x * n,2) for x in res]
-    # print("res2:", res)
     st_val = np.unique(res)
-    # print("st_val:", st_val)
     return st, res, st_val
 
 
@@ -210,7 +203,7 @@ def disc_pump_on_off(pump_one, pump_two, tank_h, num_tank_states, max_tank_heigh
     return pump_one, pump_two
 
 def disc_tank_height(demand, num_tank_states, h_init=3.0, p1_init=0, p2_init=1, t_tot=168):
-    """"Calculates the height of the tank and every time step.
+    """"Calculates the height of the tank at every time step.
         demand::List = list of demand values at each time step
         h_init::Float = initial height of tank. For network_ min = 0, max = 6.5
         p1_init::Int {0,1} = initial status of pump1; 0 = off, 1 = on
@@ -236,8 +229,6 @@ def disc_tank_height(demand, num_tank_states, h_init=3.0, p1_init=0, p2_init=1, 
         qt = dt - pf
         c = calc_constant()
         slope = slope_calc(qt,c)
-        # rslope = round_to_disc(slope, num_tank_states, True)[1]
-        # print(slope, rslope)
         height = height - slope
         t += 1
     disc_h_res = round_to_disc(height_arr, num_tank_states, True)[1]
@@ -260,7 +251,6 @@ def dict_tank_height(demand, dict, num_tank_states, h_init=3.0, p1_init=0, p2_in
     while t <= t_tot:
         time_arr.append(t)
         height = round(height, 2)
-        # print(height)
         height_arr.append(height)
         pump_arr.append((pump_1, pump_2))
         pump_1, pump_2 = disc_pump_on_off(pump_1, pump_2, height, num_tank_states)[:2]

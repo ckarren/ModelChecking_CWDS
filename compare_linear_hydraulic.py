@@ -1,36 +1,35 @@
 import numpy as np 
-from lin_model import * 
+import linear_model as lm
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import AnchoredText
 import warnings
 warnings.simplefilter("ignore", UserWarning)
 
-cont_demand = set_demand_pattern()
-tank_constant = calc_constant()
-initial_height = 3.0
-n_demand_states = 7
-n_tank_states = 14
+cont_demand = lm.set_demand_pattern()
+tank_constant = lm.calc_constant()
+initial_height = 3.5
+n_demand_states = 39
+n_tank_states = 47
 
-tank_states = create_states(0.0,6.5,n_tank_states)
-print(tank_states)
+tank_states = lm.create_states(0.0,6.5,n_tank_states)
+#  print(tank_states)
 
-i = disc_pump_rules(6.3, n_tank_states)
-j = disc_pump_rules(4.4, n_tank_states)
-k = disc_pump_rules(4.0, n_tank_states)
-l = disc_pump_rules(1.0, n_tank_states)
+i = lm.disc_pump_rules(6.3, n_tank_states)
+j = lm.disc_pump_rules(4.4, n_tank_states)
+k = lm.disc_pump_rules(4.0, n_tank_states)
+l = lm.disc_pump_rules(1.0, n_tank_states)
 
 
-round_disc_demand = round_to_disc(cont_demand,n_demand_states)
-print(round_disc_demand[2])
+round_disc_demand = lm.round_to_disc(cont_demand,n_demand_states)
+#  print(round_disc_demand[2])
 
 demand_state_val = np.unique(round_disc_demand[1])
-phd = deltaHeight(demand_state_val, tank_states, tank_constant)
-#  print(phd)
+phd = lm.deltaHeight(demand_state_val, tank_states, tank_constant)
 
-mt_linear = lin_tank_height(cont_demand, initial_height)        # linear model 
-mt_disc = disc_tank_height(round_disc_demand, n_tank_states, initial_height)    #discretized model
-gt = epanet_groundtruth(initial_height)     #hydraulic sim in WNTR
-mt_dict = dict_tank_height(round_disc_demand, phd, n_tank_states, h_init=initial_height)        #dictionary model 
+mt_linear = lm.lin_tank_height(cont_demand, initial_height)        # linear model 
+mt_disc = lm.disc_tank_height(round_disc_demand, n_tank_states, initial_height)    #discretized model
+gt = lm.epanet_groundtruth(initial_height)     #hydraulic sim in WNTR
+mt_dict = lm.dict_tank_height(round_disc_demand, phd, n_tank_states, h_init=initial_height)        #dictionary model
 
 #  for i in range(169):
     #  print('linear:', mt_linear[2][i], mt_linear[1][i], '| disc:', mt_disc[2][i], mt_disc[1][i], '| dict:', mt_dict[2][i], mt_dict[1][i],  '| epanet:', gt[1][i], gt[0][i])
@@ -51,13 +50,13 @@ dis_p = mt_disc[2]
     #     print(i)
     # else:
     #     pass
-r = calc_rmse(disc_y, gt_y)
+r = lm.calc_rmse(disc_y, gt_y)
 r_label = "RMSE=" + str(r)
 plt.rcParams['axes.spines.right']=False
 plt.rcParams['axes.spines.top']=False
 plt.rcParams.update({'font.size':20})
 fig, ax = plt.subplots()
-# ax.plot(x, lin_y, 'tab:orange', label='Linear model')
+#  ax.plot(x, lin_y, 'tab:orange', label='Linear model')
 ax.plot(x, gt_y, 'tab:blue', linewidth=3.0, label='EPANET simulation')
 ax.plot(x, disc_y, 'tab:orange', linewidth=3.0, label='Linear-discrete model')
 #  ax.plot(x, dict_y, 'tab:red', label='Dictionary model')
