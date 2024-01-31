@@ -26,27 +26,51 @@ def pump_on_off(pump_one, pump_two, tank_h):
         pump_one = 0
     elif tank_h < 4: # tested to ensure minimum RMSE b/w linear and epanet
         pump_one = 1
-    # else:
-    #     pump_one += 0
     if tank_h > 4.4: #re-calibrated tank rules to minimize RMSE b/w linear and epanet
         pump_two = 0
     elif tank_h < 1:
         pump_two = 1
-    # else:
-    #     pump_two += 0
-
     return pump_one, pump_two    
 
+def set_pump_eqns(**kwargs):
+    if 'from_regression' in kwargs:
+        if not isinstance (kwargs['from_regression'], bool):
+            raise TypeError('keyword argument "from_regression" must be True or False (bool)')
+        if kwargs['from_regression']: 
+            eq1, eq2 = regress()
+        elif 'equation1' and 'equation2'in kwargs:
+            eq1 = kwargs['equation1']
+            eq2 = kwargs['equation2']
+            if not isinstance(eq1, list) or len(eq1) != 3 or not isinstance(eq2,
+                                                                        list) or len(eq2) != 3:
+                raise TypeError("equation1 and equation2 must be lists of length 3. Each list must have the equation constant in position 0, the coefficient for the tank height in position 1, and the coefficient for the demand in position 2.")
+
+    else:
+        if 'equation1' and 'equation2' in kwargs:
+            eq1 = kwargs['equation1']
+            eq2 = kwargs['equation2']
+            if not isinstance(eq1, list) or len(eq1) != 3 or not isinstance(eq2,
+                                                                        list) or len(eq2) != 3:
+                raise TypeError("equation1 and equation2 must be lists of length 3. Each list must have the equation constant in position 0, the coefficient for the tank height in position 1, and the coefficient for the demand in position 2.")
+        else:
+            raise TypeError("missing at least 1 required positional argument: 'from_regression' or 'equation1' and 'equation2'")
+    return eq1, eq2
+
 def pump_flow(pump1, pump2, tank_h, demand):
-    #  eq1, eq2 = regress()
+    # to set linear equations manually, pass set_pump_eqns() with 2 lists of
+    # coefficients from linear regression output. To use linear_regression(), pass
+    # 'from_regression=True'. When using calc_RMSE.py, the linear_regression()
+    # considerably slows performance. Passing equaiton coefficients is suggested
+    eq1, eq2 = set_pump_eqns(equation1=[113.9,-1.34,0.036],
+                    equation2=[183.54,-2.20,0.067])
     if pump1 + pump2 == 0:
         Qpump = 0
     elif pump1 + pump2 == 1:
-        #  Qpump = eq1[0] + eq1[1] * tank_h + eq1[2] * demand
-        Qpump = 113.9 + 0.036 * demand - 1.34 * tank_h
+        Qpump = eq1[0] + eq1[1] * tank_h + eq1[2] * demand
+        #  Qpump = 113.9 + 0.036 * demand - 1.34 * tank_h
     else:
-        #  Qpump = eq2[0] + eq2[1] * tank_h + eq2[2] * demand
-        Qpump = 183.54 + .067 * demand - 2.2 * tank_h
+        Qpump = eq2[0] + eq2[1] * tank_h + eq2[2] * demand
+        #  Qpump = 183.54 + .067 * demand - 2.2 * tank_h
     Qpump = round(Qpump, 3)
 
     return Qpump
