@@ -56,4 +56,3 @@ def regress(network='minitown'):
 
     return eq1, eq2 
 
-print(regress())

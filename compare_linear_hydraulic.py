@@ -56,7 +56,7 @@ plt.rcParams['axes.spines.right']=False
 plt.rcParams['axes.spines.top']=False
 plt.rcParams.update({'font.size':20})
 fig, ax = plt.subplots()
-#  ax.plot(x, lin_y, 'tab:orange', label='Linear model')
+ax.plot(x, lin_y, 'tab:orange', label='Linear model')
 ax.plot(x, gt_y, 'tab:blue', linewidth=3.0, label='EPANET simulation')
 ax.plot(x, disc_y, 'tab:orange', linewidth=3.0, label='Linear-discrete model')
 #  ax.plot(x, dict_y, 'tab:red', label='Dictionary model')
