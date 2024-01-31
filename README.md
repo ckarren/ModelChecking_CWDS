@@ -1,5 +1,5 @@
 # Model checking water distribution systems files and models
-This repo contains all the files necessary to reproduce the methods and findings of the model checking research of cyberphysical water distribution systems. 
+This repo contains all the files necessary to reproduce the methods and findings of the research of "Identifying Cyber-Attack Vulnerabilities of Water Distribution Systems using Model Checking Karrenberg et al. 
 ## Python files for linearization and calibration
 `linear_regression.py` can be used to perform the linear regression of the case study water distribution system, MiniTown. The results of the regression can be directly used in the linearized model. Alternatively, the linear regression can be performed in any other regression tool (such as Excel, R, or Stata), and the values from the regression can be passed into the linear model (through `set_pump_eqns()`).  
 `linear_model.py` contains all the utility and helper functions to perform hyudraulic simulations (using WNTR), linear simulations, and discretized linear simulations. 
