@@ -24,7 +24,7 @@ p2_stat = results.link['status'].loc[:,'PUMP2']
 tank_flow = results.node['demand'].loc[:,'TANK'] * 1000
 p1_flow = results.link['flowrate'].loc[:,'PUMP1'] * 1000 
 p2_flow = results.link['flowrate'].loc[:,'PUMP2'] * 1000
-
+print(p1_stat)
 def regress(network='minitown'):
     if network == 'minitown':
         for t, status in enumerate(p2_stat):
