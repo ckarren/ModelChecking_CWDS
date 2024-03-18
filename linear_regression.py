@@ -71,11 +71,19 @@ def regress(network='minitown'):
 
         fig = plt.figure(figsize=(12, 4))
 
-        ax1 = fig.add_subplot(131, projection='3d')
-        ax2 = fig.add_subplot(132, projection='3d')
-        ax3 = fig.add_subplot(133, projection='3d')
+        ax1 = fig.add_subplot(121, projection='3d')
+        ax2 = fig.add_subplot(122, projection='3d')
+        #  ax3 = fig.add_subplot(133, projection='3d')
 
-        axes = [ax1, ax2, ax3]
+        #  axes = [ax1, ax2, ax3]
+        axes = [ax1, ax2]
+        #  ax1.plot(x1, y1, z1, color='k', zorder=15, linestyle='none', marker='o', alpha=0.5)
+        #  ax1.scatter(xx_pred.flatten(), yy_pred.flatten(), predicted,
+                   #  facecolor=(0,0,0,0.31), s=10, edgecolor='#b0b0b0')
+        #  ax1.set_xlabel('Tank water level (m)', fontsize=10)
+        #  ax1.set_ylabel('Water demand (m^3/s)', fontsize=10)
+        #  ax1.set_zlabel('Pump flowrate (m^3/s)', fontsize=10)
+ 
 
         for ax in axes:
             ax.plot(x1, y1, z1, color='k', zorder=15, linestyle='none', marker='o', alpha=0.5)
@@ -90,7 +98,7 @@ def regress(network='minitown'):
 
         ax1.view_init(elev=28, azim=120)
         ax2.view_init(elev=4, azim=114)
-        ax3.view_init(elev=60, azim=165)
+        #  ax3.view_init(elev=60, azim=165)
 
 
         fig.tight_layout()
