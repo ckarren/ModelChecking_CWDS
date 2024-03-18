@@ -60,8 +60,8 @@ def regress(network='minitown'):
         y1 = [i[1] for i in X1]
         z1 = Y1
 
-        x_pred = np.linspace(0, 6.5, 30)   # range of porosity values
-        y_pred = np.linspace(50, 250, 30)  # range of brittleness values
+        x_pred = np.linspace(0, 6.5, 50)   # range of porosity values
+        y_pred = np.linspace(50, 250, 50)  # range of brittleness values
         xx_pred, yy_pred = np.meshgrid(x_pred, y_pred)
         model_viz = np.array([xx_pred.flatten(), yy_pred.flatten()]).T
 
@@ -79,10 +79,11 @@ def regress(network='minitown'):
 
         for ax in axes:
             ax.plot(x1, y1, z1, color='k', zorder=15, linestyle='none', marker='o', alpha=0.5)
-            ax.scatter(xx_pred.flatten(), yy_pred.flatten(), predicted, facecolor=(0,0,0,0), s=20, edgecolor='#70b3f0')
-            ax.set_xlabel('Tank water level (m)', fontsize=12)
-            ax.set_ylabel('Water demand (m^3/s)', fontsize=12)
-            ax.set_zlabel('Pump flowrate (m^3/s)', fontsize=12)
+            ax.scatter(xx_pred.flatten(), yy_pred.flatten(), predicted,
+                       facecolor=(0,0,0,0.31), s=10, edgecolor='#b0b0b0')
+            ax.set_xlabel('Tank water level (m)', fontsize=10)
+            ax.set_ylabel('Water demand (m^3/s)', fontsize=10)
+            ax.set_zlabel('Pump flowrate (m^3/s)', fontsize=10)
             #  ax.locator_params(nbins=4, axis='x')
             #  ax.locator_params(nbins=5, axis='x')
 
