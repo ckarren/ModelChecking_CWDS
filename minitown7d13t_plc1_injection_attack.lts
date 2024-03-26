@@ -4,20 +4,21 @@ const J = 7     //demand states
 const H = 13     //tank states 
  
 //SET STATES 
-range PumpState = 0..M 		//pump states
-range DemandState = 1..J 	//demand states
-range TankState = 1..H 		//tank states
+range PumpState = 0..M 
+range DemandState = 1..J 
+range TankState = 1..H 
  
-range DeltaTank = -2..2 	//range of tank state transitions
-range DeltaPump = 0..2		//range of pump state transition
+range DeltaTank = -2..2 
+range DeltaPump = 0..2
  
 //INITIALIZE STATES 
-const A1 = 1    //initial state of pump1 
-const A2 = 0    //initial state of pump2
+const A1 = 1    //initial pump1 
+const A2 = 0    //initial pump2
 const B = 2     //initial demand          
-const C = 8     //initial tank 
+const C = 3     //initial tank 
  
-//Physical components
+ 
+//TANK  
 TANK = (start -> TANKRUN[C]), 
     TANKRUN[h:TankState] = (stop -> TANK 
 		|getTankState[h] -> tick ->  
@@ -41,10 +42,10 @@ DEMAND = (start -> DEMANDRUN[B]),
 PUMP = (start -> PUMPRUN[A1][A2]),  
     PUMPRUN[p1:PumpState][p2:PumpState] = (stop -> PUMP 
         |getPumpState[p1][p2] -> tick ->   
-                (pump2on -> PUMPRUN[p1][1] 
+                (pump2on -> PUMPRUN[1][1] 
 			    |pump2off -> PUMPRUN[p1][0] 
                 |pump1on -> PUMPRUN[1][p2] 
-				|pump1off -> PUMPRUN[0][p2] 
+				|pump1off -> PUMPRUN[0][0] 
         )). 
  
 TIME = (start -> TIMERUN),  
@@ -67,8 +68,7 @@ TANKSENSOR = (start -> TANKSENSORRUN),
     TANKSENSORRUN = (stop -> TANKSENSOR 
                     |getTankState[h:TankState] -> tick ->  tankchan.send[h] -> TANKSENSORRUN 
 					).  
-
-//System control 
+ 
 SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),  
     SYSCONTROLRUN[pi1:PumpState][pi2:PumpState][di:DemandState][hi:TankState] =  
         (stop -> SYSCONTROL 
@@ -126,7 +126,6 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==0 && d==4 && h==11) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==4 && h==12) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==4 && h==13) decT[1] -> DC[p1][p2][d][h]
-
             |when(p1+p2==0 && d==5 && h==1) decT[2] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==5 && h==2) decT[2] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==5 && h==3) decT[2] -> DC[p1][p2][d][h]
@@ -166,7 +165,6 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==0 && d==7 && h==11) decT[2] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==7 && h==12) decT[2] -> DC[p1][p2][d][h]
             |when(p1+p2==0 && d==7 && h==13) decT[2] -> DC[p1][p2][d][h]
-
             |when(p1+p2==1 && d==1 && h==1) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==1 && d==1 && h==2) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==1 && d==1 && h==3) noChangeT -> DC[p1][p2][d][h]
@@ -258,7 +256,6 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==1 && d==7 && h==11) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==1 && d==7 && h==12) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==1 && d==7 && h==13) decT[1] -> DC[p1][p2][d][h]
-
             |when(p1+p2==2 && d==1 && h==1) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==1 && h==2) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==1 && h==3) incT[1] -> DC[p1][p2][d][h]
@@ -285,7 +282,6 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==2 && d==2 && h==11) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==2 && h==12) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==2 && h==13) incT[1] -> DC[p1][p2][d][h]
-
             |when(p1+p2==2 && d==3 && h==1) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==2) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==3) incT[1] -> DC[p1][p2][d][h]
@@ -293,14 +289,12 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==2 && d==3 && h==5) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==6) incT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==7) incT[1] -> DC[p1][p2][d][h]
-
             |when(p1+p2==2 && d==3 && h==8) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==9) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==10) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==11) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==12) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==3 && h==13) noChangeT -> DC[p1][p2][d][h]
-
             |when(p1+p2==2 && d==4 && h==1) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==4 && h==2) noChangeT -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==4 && h==3) noChangeT -> DC[p1][p2][d][h]
@@ -353,18 +347,18 @@ SYSCONTROL = (start -> SYSCONTROLRUN[A1][A2][B][C]),
             |when(p1+p2==2 && d==7 && h==11) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==7 && h==12) decT[1] -> DC[p1][p2][d][h]
             |when(p1+p2==2 && d==7 && h==13) decT[1] -> DC[p1][p2][d][h]
-        ),
+    	),
           
          DC[p1:PumpState][p2:PumpState][d:DemandState][h:TankState] =  
                  (demand[1] -> SYSCONTROLRUN[p1][p2][d][h] 
-                 |demand[2] -> SYSCONTROLRUN[p1][p2][d][h] 
+                 |demand[2] -> SYSCONTROLRUN[p1][p2][d][h]
                  |demand[3] -> SYSCONTROLRUN[p1][p2][d][h] 
                  |demand[4] -> SYSCONTROLRUN[p1][p2][d][h] 
                  |demand[5] -> SYSCONTROLRUN[p1][p2][d][h] 
                  |demand[6] -> SYSCONTROLRUN[p1][p2][d][h] 
                  |demand[7] -> SYSCONTROLRUN[p1][p2][d][h] 
         ). 
- 
+
 PUMPACTUATOR = (start -> PUMPACTUATORRUN), 
 	PUMPACTUATORRUN = (stop -> PUMPACTUATOR  
 		|tick -> pumpcontrollerchan.receive[o1:5..8] ->  
@@ -375,10 +369,10 @@ PUMPACTUATOR = (start -> PUMPACTUATORRUN),
             ) 
 	). 
    
-//Cyber components 
+ 
 PLC1 = (start -> PLC1RUN),  
 	PLC1RUN = (stop -> PLC1 
-		|tick -> tankchan.receive[h:TankState] -> plc1chan.send[h] -> plc2chan.receive[p1:PumpState][p2:PumpState] -> scadachan.send[p1][p2] -> PLC1RUN).  
+		|tick -> tankchan.receive[h:TankState] -> plc1chan.send[h] -> plc2chan.receive[p1:PumpState][p2:PumpState] -> scadachan.send[1][p2] -> PLC1RUN).  
  
 PLC2 = (start -> PLC2RUN),  
     PLC2RUN = (stop -> PLC2  
@@ -387,25 +381,29 @@ PLC2 = (start -> PLC2RUN),
         //>4.4 pump two off 
         //<4 pump one on  
         //<1 pump two on  
-            (pumpcontrollerchan.send[5] -> PLC2RUN 
-			|pumpcontrollerchan.send[6] -> PLC2RUN 
-            |pumpcontrollerchan.send[7] -> PLC2RUN 
-            |pumpcontrollerchan.send[8] -> PLC2RUN 
+            (when(h<=2) pumpcontrollerchan.send[5] -> PLC2RUN 
+      		|when(h>2 && h<=8) pumpcontrollerchan.send[6] -> PLC2RUN 
+            |when(h>=9 && h<13) pumpcontrollerchan.send[7] -> PLC2RUN 
+            |when(h>=13) pumpcontrollerchan.send[8] -> PLC2RUN 
 			) 
 	).  
  
 SCADA = (start -> SCADARUN),  
 	SCADARUN = (stop -> SCADA 
-			|tick -> plc1chan.receive[h:TankState] -> scadachan.receive[p1:PumpState][p2:PumpState] -> display[h][p1][p2] -> SCADARUN).  
+			|tick -> plc1chan.receive[h:TankState] -> scadachan.receive[p1:PumpState][p2:PumpState] -> display[h][p1][p2] -> SCADARUN).
+
+INJECTION = (start -> INJECTIONRUN),
+	INJECTIONRUN = (stop -> INJECTION
+			|tick -> scadachan.receive[p1:PumpState][p2:PumpState] -> injection.send[0][1] -> INJECTIONRUN).
 
  
 ||SYS = (TANK || TANKSENSOR || DEMAND || DEMANDSENSOR || PUMP || PUMPSENSOR || PUMPACTUATOR || TIME || SYSCONTROL || PLC1 || PLC2 || SCADA) 
 	/{tankchan/tankchan.{send,receive}, demandchan/demandchan.{send, receive}, pumpchan/pumpchan.{send,receive},  
     pumpcontrollerchan/pumpcontrollerchan.{send,receive}, demandcontrollerchan/demandcontrollerchan.{send,receive},  
-    tankcontrollerchan/tankcontrollerchan.{send,receive}, timechan/timechan.{send,receive},  
+    tankcontrollerchan/tankcontrollerchan.{send,receive}, timechan/timechan.{send,receive}, injection/injection.{send,receive},
 	plc1chan/plc1chan.{send,receive}, plc2chan/plc2chan.{send,receive}, scadachan/scadachan.{send, receive}, open/open.{send, receive}}>>{tick}.  
 // maximal progress: lower the priority of tick (>>): eager physics 
  
- 
-progress ScadaDisplay = {display.{[1][2], [2..3][1..2], [4][1], [5..6][0..1], [7][0]}} 
+
+progress ScadaDisplay = {display.{[1][1][1], [10][1][0], [2..9][1][0..1]}} 
 // SCADA should only be expected to display certain combinations of tank status and pump status given pump rules.  

@@ -382,7 +382,7 @@ PLC2 = (start -> PLC2RUN),
         //<4 pump one on  
         //<1 pump two on  
             (when(h<=2) pumpcontrollerchan.send[5] -> PLC2RUN 
-      			|when(h>2 && h<=8) pumpcontrollerchan.send[6] -> PLC2RUN 
+      		|when(h>2 && h<=8) pumpcontrollerchan.send[6] -> PLC2RUN 
             |when(h>=9 && h<13) pumpcontrollerchan.send[7] -> PLC2RUN 
             |when(h>=13) pumpcontrollerchan.send[8] -> PLC2RUN 
 			) 
