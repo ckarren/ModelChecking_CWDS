@@ -6,5 +6,6 @@ This repo contains all the files necessary to reproduce the methods and findings
 `compare_linear_hydraulic.py` can be used to visualize the performance of the linear and discretized case study water distribution system compared to a hydraulic simulation using `WNTR`. 
 `calc_RMSE.py` can be used to find the number of discrete states of the target water distribution system that minimizes the root mean square error when compared with a hydraulic simulation. 
 ## nuXmv model files
-
+Files with the extension `.smv` are infinite state models of the MiniTown CWDS written in nuXmv. These files can be opened in in the nuXmv model checker available for download from https://nuxmv.fbk.eu/.   
 ## LTSA model files
+Files with the extension `.lts` are state machine models of the MiniTown CWDS written in FSP. These files can be opened in the Labelled Transistion System Analyser (LTSA) which is available for download from https://www.doc.ic.ac.uk/ltsa/. 
