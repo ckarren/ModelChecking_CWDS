@@ -9,7 +9,7 @@ This repo contains all the files necessary to reproduce the methods and findings
 Files with the extension `.smv` are infinite state models written in nuXmv. These files can be opened in in the nuXmv model checker available for download from https://nuxmv.fbk.eu/
 - `door.smv` is a small example to illustrate the nuXmv language. This file contains an infinite state model of a door
 - `tanks.smv` contains the nuXmv infinite state model of water tanks to illustrate the nuXmv language and how cyberphysical water distribution system components can be modelled in nuXmv
-- `MiniTownInfinite.smv' is an infinite state model of the MiniTown CWDS and can be used to perform model checking and identify security vulnerabilities using the nuXmv model checker.   
+- `MiniTownInfinite.smv` is an infinite state model of the MiniTown CWDS and can be used to perform model checking and identify security vulnerabilities using the nuXmv model checker.   
 ## LTSA model files
 Files with the extension `.lts` are state machine models of the MiniTown CWDS written in FSP. These files can be opened in the Labelled Transistion System Analyser (LTSA) which is available for download from https://www.doc.ic.ac.uk/ltsa/
 - `minitown7d13t.lts` is the finite state machine model of the MiniTown CWDS
