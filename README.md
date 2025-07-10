@@ -19,7 +19,7 @@ Files with the extension `.lts` are state machine models of the MiniTown CWDS wr
 - `minitown7d13t_pump_actuator_attack.lts` is the finite state machine model of the MiniTown CWDS with an attack on the pump actuator
 - `minitown7d13t_tank_sensor_attack.lts` is the finite state machine model of the MiniTown CWDS with an attack on the tank sensor
 ## .inp file
-`minitown_map.inp` contains the EPANET compatible file of the hydraulic model of the MiniTown CWDS
+- `minitown_map.inp` contains the EPANET compatible file of the hydraulic model of the MiniTown CWDS
 ## Other files
--`minitown_patterns.csv` is a CSV file that contains all the demand patterns used in the hydraulic simulation of the MiniTown CWDS
--`demand.txt` is a TXT file that contains the demand curve for a 168 hour hydraulic simulatino of the MiniTown CWDS
+- `minitown_patterns.csv` is a CSV file that contains all the demand patterns used in the hydraulic simulation of the MiniTown CWDS  
+- `demand.txt` is a TXT file that contains the demand curve for a 168 hour hydraulic simulatino of the MiniTown CWDS
