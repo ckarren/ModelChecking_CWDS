@@ -60,8 +60,8 @@ def regress(network='minitown'):
         y1 = [i[1] for i in X1]
         z1 = Y1
 
-        x_pred = np.linspace(0, 6.5, 50)   # range of porosity values
-        y_pred = np.linspace(50, 250, 50)  # range of brittleness values
+        x_pred = np.linspace(0, 6.5, 50)   # range of tank values
+        y_pred = np.linspace(50, 250, 50)  # range of demand values
         xx_pred, yy_pred = np.meshgrid(x_pred, y_pred)
         model_viz = np.array([xx_pred.flatten(), yy_pred.flatten()]).T
 
